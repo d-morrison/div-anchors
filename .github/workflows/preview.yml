@@ -1,0 +1,122 @@
+name: Quarto Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+      - labeled
+      - unlabeled
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for git diff
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::knitr
+            any::rmarkdown
+            any::tibble
+
+      - name: Render
+        uses: quarto-dev/quarto-actions/render@v2
+
+      # Detect which chapters have changed and optionally disable highlighting
+      # based on the 'no-preview-highlights' PR label
+      - name: Detect changed chapters (based on rendered files)
+        run: python3 .github/scripts/detect-changed-chapters.py
+        env:
+          HTML_DIR: ./_site
+          # Set to 'true' if PR has 'no-preview-highlights' label
+          DISABLE_PREVIEW_HIGHLIGHTS: ${{ contains(github.event.pull_request.labels.*.name, 'no-preview-highlights') }}
+
+      - name: Inject preview metadata
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        run: python3 .github/scripts/inject-preview-metadata.py
+
+      - name: Re-render with metadata
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Install python-docx for DOCX comparison
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        run: pip install python-docx
+
+      - name: Highlight HTML content changes
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        run: |
+          echo "Changed chapters:"
+          echo "${{ env.PREVIEW_CHANGED_CHAPTERS }}"
+          python3 .github/scripts/highlight-html-changes.py
+        env:
+          HTML_DIR: ./_site
+          PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
+
+      - name: Create DOCX with tracked changes
+        run: python3 .github/scripts/create-docx-tracked-changes.py
+        env:
+          DOCX_DIR: ./_site
+
+      - name: Add home page banner
+        run: python3 .github/scripts/add-home-banner.py
+        env:
+          HTML_DIR: ./_site
+          PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
+
+      - name: Deploy PR Preview
+        id: preview-step
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./_site/
+          # Deploy on label changes too, not just open/reopen/synchronize
+          # The 'auto' action ignores label events, so we explicitly set 'deploy' for non-closed PRs
+          action: ${{ github.event.action == 'closed' && 'remove' || 'deploy' }}
+          preview-branch: gh-pages
+          comment: "false"
+          wait-for-pages-deployment: true
+
+      # Create sticky comment with preview link
+      # Following https://github.com/rossjrw/pr-preview-action?tab=readme-ov-file#customise-the-sticky-comment
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: steps.preview-step.outputs.deployment-action == 'deploy' && env.deployment_status == 'success'
+        with:
+          header: pr-preview
+          recreate: true
+          message: |
+              [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+              :---:
+              | <p><img src="https://qr.rossjrw.com/?url=${{ steps.preview-step.outputs.preview-url }}" height="100" align="right" alt="QR code for preview link"></p> :rocket: View preview at <br> ${{ steps.preview-step.outputs.preview-url }} <br><br>
+              | <h6>Built to branch [`gh-pages`](${{ github.server_url }}/${{ github.repository }}/tree/gh-pages) at ${{ steps.preview-step.outputs.action-start-time }}. <br> Preview will be ready when the [GitHub Pages deployment](${{ github.server_url }}/${{ github.repository }}/deployments) is complete. <br><br> </h6>
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: steps.preview-step.outputs.deployment-action == 'remove' && env.deployment_status == 'success'
+        with:
+            header: pr-preview
+            recreate: true
+            message: |
+                [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+                :---:
+                Preview removed because the pull request was closed.
+                ${{ steps.preview-step.outputs.action-start-time }}
+        
