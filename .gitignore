@@ -74,4 +74,3 @@ renv/sandbox/
 renv/staging/
 # Lychee link checker
 .lycheecache/
-lychee-output/
