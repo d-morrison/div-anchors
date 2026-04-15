@@ -29,6 +29,8 @@ website:
             href: chapters/chapter1.qmd
           - text: "Chapter 2: Advanced Topics"
             href: chapters/chapter2.qmd
+          - text: "Div Anchors Extension Demo"
+            href: example.qmd
     right:
       - icon: github
         href: https://github.com/UCD-SERG/qwt
