@@ -23,14 +23,18 @@ directory of your Quarto project.
 
 ## Usage
 
-Add the extension to your document's YAML front matter:
+After installation, the extension is available as `d-morrison/div-anchors`
+(the command `quarto add` creates `_extensions/d-morrison/div-anchors/`).
+
+To apply the extension to a **single document**, add it to the document's
+front matter:
 
 ```yaml
 filters:
   - d-morrison/div-anchors
 ```
 
-Or, to apply it project-wide, add it to `_quarto.yml`:
+To apply it to **every document in a project**, add it to `_quarto.yml`:
 
 ```yaml
 filters:

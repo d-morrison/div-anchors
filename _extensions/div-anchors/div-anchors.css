@@ -21,7 +21,10 @@
   text-decoration: none;
 }
 
-/* Show the anchor when hovering over any theorem or proof div */
+/* Show the anchor when hovering over any theorem or proof div.
+ * .theorem covers all theorem-type environments (lemma, corollary,
+ * proposition, conjecture, definition, example, exercise, algorithm).
+ * Proof-type environments are listed separately. */
 :is(.theorem, .proof, .remark, .solution):hover .div-anchor {
   opacity: 1;
 }

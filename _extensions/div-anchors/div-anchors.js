@@ -13,9 +13,19 @@
 (function () {
   "use strict";
 
-  /** CSS selector matching all Quarto theorem and proof div environments. */
+  /**
+   * CSS selector matching all Quarto theorem and proof div environments.
+   *
+   * Quarto adds the `.theorem` class to all theorem-type divs
+   * (theorem, lemma, corollary, proposition, conjecture, definition,
+   * example, exercise, algorithm), so `.theorem[id]` covers all of them.
+   * Proof-type environments (.proof, .remark, .solution) are listed
+   * separately because they do not carry the `.theorem` class.
+   */
   var THEOREM_SELECTOR = [
-    ".theorem[id]",
+    ".theorem[id]", /* covers: theorem, lemma, corollary, proposition,
+                                conjecture, definition, example,
+                                exercise, algorithm */
     ".proof[id]",
     ".remark[id]",
     ".solution[id]",
