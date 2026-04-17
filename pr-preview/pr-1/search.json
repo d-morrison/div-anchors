@@ -79,23 +79,23 @@
   {
     "objectID": "chapters/chapter1-slides.html#subsection-1.1.1",
     "href": "chapters/chapter1-slides.html#subsection-1.1.1",
-    "title": "1 Chapter 1: Introduction",
+    "title": "\n1 Chapter 1: Introduction",
     "section": "Subsection 1.1.1",
-    "text": "Subsection 1.1.1\nYou can include:\n\nLists like this one\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation"
+    "text": "Subsection 1.1.1\nYou can include:\n\n\nLists like this one\n\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation"
   },
   {
     "objectID": "chapters/chapter1.html",
     "href": "chapters/chapter1.html",
     "title": "Chapter 1: Introduction",
     "section": "",
-    "text": "This is the first chapter of your website. Replace this content with your own.\n\n\nAdd your content here.\n\n\nYou can include:\n\nLists like this one\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation\n\n\n\n\n\nYou can also include code blocks:\n# Example Python code\ndef hello_world():\n    print(\"Hello, World!\")\n\nhello_world()\nOr R code:\n# Example R code\nlibrary(ggplot2)\n\nggplot(mtcars, aes(x = wt, y = mpg)) +\n  geom_point() +\n  theme_minimal()\n\n\n\nInclude citations using @citationkey format, which references entries in your references.bib file.\nI’m adding some new content here:\n\n1 + 1\n#&gt; [1] 2"
+    "text": "This is the first chapter of your website. Replace this content with your own.\n\nAdd your content here.\n\nYou can include:\n\n\nLists like this one\n\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation\n\n\nYou can also include code blocks:\n# Example Python code\ndef hello_world():\n    print(\"Hello, World!\")\n\nhello_world()\nOr R code:\n# Example R code\nlibrary(ggplot2)\n\nggplot(mtcars, aes(x = wt, y = mpg)) +\n  geom_point() +\n  theme_minimal()\n\nInclude citations using @citationkey format, which references entries in your references.bib file.\nI’m adding some new content here:\n\n1 + 1\n#&gt; [1] 2"
   },
   {
     "objectID": "chapters/chapter1.html#section-1.1",
     "href": "chapters/chapter1.html#section-1.1",
     "title": "Chapter 1: Introduction",
     "section": "",
-    "text": "Add your content here.\n\n\nYou can include:\n\nLists like this one\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation"
+    "text": "Add your content here.\n\nYou can include:\n\n\nLists like this one\n\nItalic and bold text\nCode snippets\nLinks: Quarto Documentation"
   },
   {
     "objectID": "chapters/chapter1.html#section-1.2",
