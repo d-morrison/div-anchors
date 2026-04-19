@@ -123,7 +123,7 @@
     "href": "example.html#theorems",
     "title": "Div Anchors Extension Demo",
     "section": "1 Theorems",
-    "text": "1 Theorems\n\nTheorem 1 For a right triangle with legs \\(a\\) and \\(b\\) and hypotenuse \\(c\\): \\[a^2 + b^2 = c^2.\\]\n\n\nTheorem 2 If \\(f\\) is continuous on \\([a, b]\\) and \\(k\\) is any value between \\(f(a)\\) and \\(f(b)\\), then there exists \\(c \\in (a, b)\\) such that \\(f(c) = k\\)."
+    "text": "1 Theorems\n\nTheorem 1 (Pythagorean Theorem) For a right triangle with legs \\(a\\) and \\(b\\) and hypotenuse \\(c\\): \\[a^2 + b^2 = c^2.\\]\n\n\nTheorem 2 If \\(f\\) is continuous on \\([a, b]\\) and \\(k\\) is any value between \\(f(a)\\) and \\(f(b)\\), then there exists \\(c \\in (a, b)\\) such that \\(f(c) = k\\)."
   },
   {
     "objectID": "example.html#lemmas-and-corollaries",
