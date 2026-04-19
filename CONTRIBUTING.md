@@ -1,4 +1,4 @@
-# Contributing to Your Quarto Book
+# Contributing to div-anchors
 
 Thank you for your interest in contributing to this book!
 
