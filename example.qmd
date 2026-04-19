@@ -17,6 +17,9 @@ Click it to copy a direct link to that block.
 ## Theorems
 
 ::: {#thm-pythagorean}
+
+### Pythagorean Theorem
+
 For a right triangle with legs $a$ and $b$ and hypotenuse $c$:
 $$a^2 + b^2 = c^2.$$
 :::
