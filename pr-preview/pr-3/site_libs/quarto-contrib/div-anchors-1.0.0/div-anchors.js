@@ -40,7 +40,7 @@
     var a = document.createElement("a");
     a.href = "#" + id;
     a.className = "div-anchor";
-    a.setAttribute("aria-label", "Permalink to this theorem or proof block");
+    a.setAttribute("aria-label", "Permalink to this block");
     var icon = document.createElement("span");
     icon.setAttribute("aria-hidden", "true");
     icon.textContent = "\u00A7";
