@@ -8,7 +8,7 @@
   opacity: 0;
   visibility: hidden;
   display: inline-block;
-  width: 0;
+  max-width: 0;
   overflow: hidden;
   white-space: nowrap;
   font-size: 0.875em;
@@ -19,14 +19,15 @@
   vertical-align: middle;
   transition:
     opacity 0.2s ease,
-    margin-left 0.2s ease;
+    margin-left 0.2s ease,
+    max-width 0.2s ease;
 }
 
 .div-anchor:hover,
 .div-anchor:focus {
   opacity: 1;
   visibility: visible;
-  width: auto;
+  max-width: 1em;
   margin-left: 0.375em;
   text-decoration: none;
 }
@@ -39,6 +40,6 @@
 :is(.theorem, .proof, .remark, .solution):focus-within .div-anchor {
   opacity: 1;
   visibility: visible;
-  width: auto;
+  max-width: 1em;
   margin-left: 0.375em;
 }
