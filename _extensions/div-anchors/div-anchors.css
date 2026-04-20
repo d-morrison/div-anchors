@@ -4,6 +4,12 @@
  * which shows a small anchor icon on hover for HTML headings.
  */
 
+/* Shared sizing values for hidden/visible anchor states. */
+:root {
+  --div-anchor-max-width: 1em;
+  --div-anchor-spacing: 0.375em;
+}
+
 .div-anchor {
   opacity: 0;
   visibility: hidden;
@@ -27,8 +33,8 @@
 .div-anchor:focus {
   opacity: 1;
   visibility: visible;
-  max-width: 1em;
-  margin-left: 0.375em;
+  max-width: var(--div-anchor-max-width);
+  margin-left: var(--div-anchor-spacing);
   text-decoration: none;
 }
 
@@ -40,6 +46,6 @@
 :is(.theorem, .proof, .remark, .solution):focus-within .div-anchor {
   opacity: 1;
   visibility: visible;
-  max-width: 1em;
-  margin-left: 0.375em;
+  max-width: var(--div-anchor-max-width);
+  margin-left: var(--div-anchor-spacing);
 }
