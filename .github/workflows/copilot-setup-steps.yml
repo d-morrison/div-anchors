@@ -1,4 +1,4 @@
-# GitHub Copilot Setup Steps for qwt
+# GitHub Copilot Setup Steps for div-anchors
 #
 # This workflow configures the GitHub Copilot coding agent's environment
 # by preinstalling R, Quarto, TinyTeX, and system dependencies.

@@ -1,0 +1,71 @@
+---
+title: "Div Anchors Extension Demo"
+filters:
+  - div-anchors
+format:
+  html:
+    number-sections: true
+    anchor-sections: true
+---
+
+This document demonstrates the `div-anchors` Quarto extension, which adds
+visual URL anchor links to theorem divs for HTML output.
+
+Hover over any of the theorem blocks below to see the anchor link (§) appear.
+Click it to copy a direct link to that block.
+
+## Theorems
+
+::: {#thm-pythagorean}
+
+### Pythagorean Theorem
+
+For a right triangle with legs $a$ and $b$ and hypotenuse $c$:
+$$a^2 + b^2 = c^2.$$
+:::
+
+::: {#thm-intermediate-value}
+If $f$ is continuous on $[a, b]$ and $k$ is any value between $f(a)$ and
+$f(b)$, then there exists $c \in (a, b)$ such that $f(c) = k$.
+:::
+
+## Lemmas and Corollaries
+
+::: {#lem-cauchy-schwarz}
+For all vectors $\mathbf{u}, \mathbf{v}$:
+$$|\langle \mathbf{u}, \mathbf{v} \rangle|^2
+  \leq \langle \mathbf{u}, \mathbf{u} \rangle
+       \cdot \langle \mathbf{v}, \mathbf{v} \rangle.$$
+:::
+
+::: {#cor-triangle-inequality}
+For all vectors $\mathbf{u}, \mathbf{v}$:
+$$\|\mathbf{u} + \mathbf{v}\| \leq \|\mathbf{u}\| + \|\mathbf{v}\|.$$
+:::
+
+## Definitions and Examples
+
+::: {#def-prime}
+A natural number $p > 1$ is *prime* if it has no positive divisors other
+than $1$ and itself.
+:::
+
+::: {#exm-primes}
+The first five prime numbers are 2, 3, 5, 7, and 11.
+:::
+
+## Cross-References
+
+Theorem @thm-pythagorean is often taught in secondary school.
+The result in @lem-cauchy-schwarz implies the @cor-triangle-inequality.
+See @def-prime and @exm-primes for an introduction to prime numbers.
+
+## Proof (without anchor, unnumbered)
+
+::: {.proof}
+Let $a$ and $b$ be the legs of a right triangle and $c$ the hypotenuse.
+Arrange four copies of the triangle around a square with side $c$.
+The outer shape is a square with side $a + b$, so
+$(a + b)^2 = c^2 + 4 \cdot \tfrac{1}{2}ab$,
+which simplifies to $a^2 + b^2 = c^2$.
+:::

@@ -94,7 +94,7 @@ jobs:
           action: ${{ github.event.action == 'closed' && 'remove' || 'deploy' }}
           preview-branch: gh-pages
           comment: "false"
-          wait-for-pages-deployment: true
+          wait-for-pages-deployment: false
 
       # Create sticky comment with preview link
       # Following https://github.com/rossjrw/pr-preview-action?tab=readme-ov-file#customise-the-sticky-comment
