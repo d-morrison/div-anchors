@@ -6,18 +6,28 @@
 
 .div-anchor {
   opacity: 0;
+  visibility: hidden;
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
   font-size: 0.875em;
   font-weight: 400;
-  margin-left: 0.375em;
+  margin-left: 0;
   text-decoration: none;
   color: inherit;
   vertical-align: middle;
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    margin-left 0.2s ease;
 }
 
 .div-anchor:hover,
 .div-anchor:focus {
   opacity: 1;
+  visibility: visible;
+  width: auto;
+  margin-left: 0.375em;
   text-decoration: none;
 }
 
@@ -25,6 +35,10 @@
  * .theorem covers all theorem-type environments (lemma, corollary,
  * proposition, conjecture, definition, example, exercise, algorithm).
  * Proof-type environments are listed separately. */
-:is(.theorem, .proof, .remark, .solution):hover .div-anchor {
+:is(.theorem, .proof, .remark, .solution):hover .div-anchor,
+:is(.theorem, .proof, .remark, .solution):focus-within .div-anchor {
   opacity: 1;
+  visibility: visible;
+  width: auto;
+  margin-left: 0.375em;
 }
