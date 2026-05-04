@@ -6,10 +6,11 @@ format:
   html:
     number-sections: true
     anchor-sections: true
+  revealjs: default
 ---
 
 This document demonstrates the `div-anchors` Quarto extension, which adds
-visual URL anchor links to theorem divs for HTML output.
+visual URL anchor links to theorem divs for HTML and RevealJS output.
 
 Hover over any of the theorem blocks below to see the anchor link (§) appear.
 Click it to copy a direct link to that block.

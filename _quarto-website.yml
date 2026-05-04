@@ -24,6 +24,8 @@ website:
         menu:
           - text: "Div Anchors Extension Demo"
             href: example.qmd
+          - text: "Demo (Slides)"
+            href: example-slides.html
     right:
       - icon: github
         href: https://github.com/d-morrison/div-anchors
