@@ -1,9 +1,6 @@
 ---
 title: "div-anchors"
-date: last-modified
-date-format: "[Last modified:] YYYY-MM-DD HH:mm:ss (z)"
-format:
-  html: default
+format: html
 ---
 
 # Welcome {.unnumbered}
@@ -44,8 +41,4 @@ of all supported theorem types.
 Source code is available at
 <https://github.com/d-morrison/div-anchors>.
 
-## References {.unnumbered}
-
-::: {#refs}
-:::
 

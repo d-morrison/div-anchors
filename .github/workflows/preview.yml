@@ -41,12 +41,53 @@ jobs:
       - name: Render
         uses: quarto-dev/quarto-actions/render@v2
 
+      - name: Resolve rendered output directory
+        run: |
+          if [ -d "_book" ]; then
+            echo "QUARTO_OUTPUT=./_book" >> "$GITHUB_ENV"
+          elif [ -d "_site" ]; then
+            echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
+          else
+            mkdir -p _site
+            qmd_files=()
+            while IFS= read -r -d '' qmd_file; do
+              qmd_files+=("$qmd_file")
+            done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            html_files=()
+            for qmd_file in "${qmd_files[@]}"; do
+              html_file="${qmd_file%.qmd}.html"
+              if [ -f "$html_file" ]; then
+                html_files+=("$html_file")
+              fi
+            done
+            if [ ${#html_files[@]} -eq 0 ]; then
+              quarto render "${qmd_files[@]}" --to html --output-dir _site
+              for qmd_file in "${qmd_files[@]}"; do
+                html_file="_site/$(basename "${qmd_file%.qmd}.html")"
+                if [ -f "$html_file" ]; then
+                  html_files+=("$html_file")
+                fi
+              done
+            fi
+            if [ ${#html_files[@]} -gt 0 ]; then
+              for html_file in "${html_files[@]}"; do
+                if [[ "$html_file" != _site/* ]]; then
+                  cp "$html_file" _site/
+                fi
+              done
+              echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
+            else
+              echo "No rendered output found. Ensure Quarto render succeeded and produced _book/, _site/, or .html output from top-level .qmd files."
+              exit 1
+            fi
+          fi
+
       # Detect which chapters have changed and optionally disable highlighting
       # based on the 'no-preview-highlights' PR label
       - name: Detect changed chapters (based on rendered files)
         run: python3 .github/scripts/detect-changed-chapters.py
         env:
-          HTML_DIR: ./_site
+          HTML_DIR: ${{ env.QUARTO_OUTPUT }}
           # Set to 'true' if PR has 'no-preview-highlights' label
           DISABLE_PREVIEW_HIGHLIGHTS: ${{ contains(github.event.pull_request.labels.*.name, 'no-preview-highlights') }}
 
@@ -69,26 +110,42 @@ jobs:
           echo "${{ env.PREVIEW_CHANGED_CHAPTERS }}"
           python3 .github/scripts/highlight-html-changes.py
         env:
-          HTML_DIR: ./_site
+          HTML_DIR: ${{ env.QUARTO_OUTPUT }}
           PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
 
       - name: Create DOCX with tracked changes
         run: python3 .github/scripts/create-docx-tracked-changes.py
         env:
-          DOCX_DIR: ./_site
+          DOCX_DIR: ${{ env.QUARTO_OUTPUT }}
 
       - name: Add home page banner
         run: python3 .github/scripts/add-home-banner.py
         env:
-          HTML_DIR: ./_site
+          HTML_DIR: ${{ env.QUARTO_OUTPUT }}
           PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
+
+      - name: Ensure preview index page exists
+        run: |
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ] && [ -f "index.qmd" ]; then
+            quarto render index.qmd --to html --output-dir "${{ env.QUARTO_OUTPUT }}" --no-clean
+          fi
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ]; then
+            first_html="$(find "${{ env.QUARTO_OUTPUT }}" -maxdepth 1 -type f -name '*.html' | head -n 1)"
+            if [ -n "$first_html" ]; then
+              cp "$first_html" "${{ env.QUARTO_OUTPUT }}/index.html"
+            fi
+          fi
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ]; then
+            echo "Failed to create index.html: no index.qmd found and no HTML files available in output directory"
+            exit 1
+          fi
 
       - name: Deploy PR Preview
         id: preview-step
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./_site/
+          source-dir: ${{ env.QUARTO_OUTPUT }}/
           # Deploy on label changes too, not just open/reopen/synchronize
           # The 'auto' action ignores label events, so we explicitly set 'deploy' for non-closed PRs
           action: ${{ github.event.action == 'closed' && 'remove' || 'deploy' }}
@@ -119,4 +176,3 @@ jobs:
                 :---:
                 Preview removed because the pull request was closed.
                 ${{ steps.preview-step.outputs.action-start-time }}
-        

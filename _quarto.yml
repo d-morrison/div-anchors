@@ -1,22 +1,12 @@
-profile:
-  default: website
+project:
+  type: website
+  output-dir: _site
 
-bibliography: references.bib
-
-editor_options:
-  chunk_output_type: console
-
-editor:
-  markdown:
-    wrap: 72
-
-execute:
-  warning: false
-  message: false
-  cache: false
-  freeze: auto
-
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: "#>"
+website:
+  title: "div-anchors"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: example.qmd
+        text: Example

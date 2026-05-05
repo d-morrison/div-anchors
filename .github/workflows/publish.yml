@@ -33,9 +33,50 @@ jobs:
       - name: Render
         uses: quarto-dev/quarto-actions/render@v2
 
+      - name: Resolve rendered output directory
+        run: |
+          if [ -d "_book" ]; then
+            echo "QUARTO_OUTPUT=./_book" >> "$GITHUB_ENV"
+          elif [ -d "_site" ]; then
+            echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
+          else
+            mkdir -p _site
+            qmd_files=()
+            while IFS= read -r -d '' qmd_file; do
+              qmd_files+=("$qmd_file")
+            done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            html_files=()
+            for qmd_file in "${qmd_files[@]}"; do
+              html_file="${qmd_file%.qmd}.html"
+              if [ -f "$html_file" ]; then
+                html_files+=("$html_file")
+              fi
+            done
+            if [ ${#html_files[@]} -eq 0 ]; then
+              quarto render "${qmd_files[@]}" --to html --output-dir _site
+              for qmd_file in "${qmd_files[@]}"; do
+                html_file="_site/$(basename "${qmd_file%.qmd}.html")"
+                if [ -f "$html_file" ]; then
+                  html_files+=("$html_file")
+                fi
+              done
+            fi
+            if [ ${#html_files[@]} -gt 0 ]; then
+              for html_file in "${html_files[@]}"; do
+                if [[ "$html_file" != _site/* ]]; then
+                  cp "$html_file" _site/
+                fi
+              done
+              echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
+            else
+              echo "No rendered output found. Ensure Quarto render succeeded and produced _book/, _site/, or .html output from top-level .qmd files."
+              exit 1
+            fi
+          fi
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: _site/
+          folder: ${{ env.QUARTO_OUTPUT }}/
           clean-exclude: pr-preview/
           force: false
