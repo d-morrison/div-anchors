@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "References",
-    "section": "",
-    "text": "References\n\n\n\n\n\n\n\n\n\n Back to top"
-  },
-  {
     "objectID": "example.html",
     "href": "example.html",
     "title": "Div Anchors Extension Demo",
     "section": "",
-    "text": "This document demonstrates the div-anchors Quarto extension, which adds visual URL anchor links to theorem divs for HTML and RevealJS output.\nHover over any of the theorem blocks below to see the anchor link (§) appear. Click it to copy a direct link to that block."
+    "text": "This document demonstrates the div-anchors Quarto extension, which adds visual URL anchor links to theorem divs for HTML output.\nHover over any of the theorem blocks below to see the anchor link (§) appear. Click it to copy a direct link to that block."
   },
   {
     "objectID": "example.html#theorems",
