@@ -100,6 +100,22 @@ The anchor is invisible by default and fades in when the user hovers over
 the theorem block, matching the behavior of Quarto's `anchor-sections` option
 for headings.
 
+Figures get an anchor too.
+It follows the figure's own caption:
+for a single figure, for each subfigure that has an id,
+and for the parent of a subfigure group,
+which Quarto's `anchor-sections` skips.
+In revealjs, a figure alone on a slide gets one after its caption too.
+On a figure with a caption anchor, Quarto's own corner link is hidden
+until it has keyboard focus, so each figure shows one link.
+Where Quarto adds that corner link, the caption anchor is hidden from screen readers,
+because the figure's description is read from its caption,
+and the corner link stays the accessible permalink.
+A subfigure group or a revealjs figure has no corner link,
+so its caption anchor stays reachable.
+A labelled figure with no caption text still gets one,
+after its "Figure N" label.
+
 ## Acknowledgements
 
 This extension was inspired by Quarto's built-in `anchor-sections` feature.
