@@ -11,7 +11,7 @@ function Meta(meta)
   if quarto.doc.isFormat("html") or quarto.doc.isFormat("revealjs") then
     quarto.doc.addHtmlDependency({
       name = "div-anchors",
-      version = "1.0.0",
+      version = "1.1.0",
       scripts = {
         { path = "div-anchors.js" }
       },

@@ -60,6 +60,25 @@ Theorem @thm-pythagorean is often taught in secondary school.
 The result in @lem-cauchy-schwarz implies the @cor-triangle-inequality.
 See @def-prime and @exm-primes for an introduction to prime numbers.
 
+## Figures
+
+Hover over a figure or a subfigure to see the anchor after its caption.
+@fig-pair-a is one panel of @fig-pair.
+
+::: {#fig-single}
+![](https://quarto.org/quarto.png){width=30%}
+
+A single figure.
+:::
+
+::: {#fig-pair layout-ncol=2}
+![Left panel](https://quarto.org/quarto.png){#fig-pair-a}
+
+![Right panel](https://quarto.org/quarto.png){#fig-pair-b}
+
+A subfigure group.
+:::
+
 ## Proof (without anchor, unnumbered)
 
 ::: {.proof}

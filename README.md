@@ -100,6 +100,16 @@ The anchor is invisible by default and fades in when the user hovers over
 the theorem block, matching the behavior of Quarto's `anchor-sections` option
 for headings.
 
+Figures get an anchor too.
+It follows the figure's own caption:
+for a single figure, for each subfigure that has an id,
+and for the parent of a subfigure group,
+which Quarto's `anchor-sections` skips.
+On a figure with a caption anchor, Quarto's own corner link is hidden,
+so each figure has one link.
+A labelled figure with no caption text still gets one,
+after its "Figure N" label.
+
 ## Acknowledgements
 
 This extension was inspired by Quarto's built-in `anchor-sections` feature.

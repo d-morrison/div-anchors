@@ -74,7 +74,8 @@
 
       // A div can match more than one selector, and the script can run
       // twice; never add a second anchor.
-      if (div.querySelector("a.div-anchor")) {
+      // A figure's anchor inside the div does not count.
+      if (div.querySelector("a.div-anchor:not(.div-anchor-figure)")) {
         return;
       }
 
@@ -117,9 +118,39 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", addDivAnchors);
-  } else {
+  /**
+   * Add an anchor link to the end of each figure's own caption.
+   *
+   * Quarto's `anchor-sections` skips the parent of a subfigure group
+   * (a `.quarto-layout-panel` without the `anchored` class), and puts the
+   * link it does add in the figure box's top-right corner, far from a
+   * centred image and under a plotly toolbar. A link after the caption,
+   * like the one after a theorem title, avoids both. div-anchors.css hides
+   * Quarto's corner link on a figure that gets one here.
+   */
+  function addFigureAnchors() {
+    var figs = document.querySelectorAll("div[id^='fig-']");
+    figs.forEach(function (fig) {
+      // The figure's own caption, not a subfigure's.
+      var caption = fig.querySelector(":scope > figure > figcaption");
+      if (!caption || caption.querySelector(":scope > a.div-anchor")) {
+        return;
+      }
+      var anchor = createAnchor(fig.id);
+      anchor.classList.add("div-anchor-figure");
+      caption.appendChild(anchor);
+      fig.classList.add("has-div-anchor");
+    });
+  }
+
+  function addAllAnchors() {
     addDivAnchors();
+    addFigureAnchors();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", addAllAnchors);
+  } else {
+    addAllAnchors();
   }
 })();
