@@ -1,0 +1,52 @@
+/* div-anchors.css
+ * Visual URL anchor links for theorem and proof divs.
+ * Mirrors the behavior of Quarto's built-in `anchor-sections` option,
+ * which shows a small anchor icon on hover for HTML headings.
+ */
+
+/* Shared spacing value for theorem/proof permalink anchors. */
+:root {
+  --div-anchor-spacing: 0.375em;
+}
+
+.div-anchor {
+  opacity: 0;
+  font-size: 0.875em;
+  font-weight: 400;
+  margin-left: var(--div-anchor-spacing);
+  text-decoration: none;
+  color: inherit;
+  vertical-align: middle;
+  transition: opacity 0.2s ease;
+}
+
+.div-anchor:hover,
+.div-anchor:focus {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Show the anchor when hovering over any theorem or proof div.
+ * .theorem covers all theorem-type environments (lemma, corollary,
+ * proposition, conjecture, definition, example, exercise, algorithm).
+ * Proof-type environments are listed separately, and the
+ * cross-reference id prefixes catch divs with neither class. */
+:is(.theorem, .proof, .remark, .solution, [id^="thm-"], [id^="lem-"], [id^="cor-"], [id^="prp-"], [id^="cnj-"], [id^="def-"], [id^="exm-"], [id^="exr-"], [id^="rem-"], [id^="sol-"], [id^="alg-"]):hover .div-anchor:not(.div-anchor-figure),
+:is(.theorem, .proof, .remark, .solution, [id^="thm-"], [id^="lem-"], [id^="cor-"], [id^="prp-"], [id^="cnj-"], [id^="def-"], [id^="exm-"], [id^="exr-"], [id^="rem-"], [id^="sol-"], [id^="alg-"]):focus-within .div-anchor:not(.div-anchor-figure) {
+  opacity: 1;
+}
+
+/* A figure's anchor follows its caption, and shows while the figure is
+ * hovered or focused. `:scope > figure > figcaption` in div-anchors.js
+ * picks the figure's own caption, so hovering a subfigure group shows
+ * only the group's anchor. */
+[id^="fig-"]:hover > figure > figcaption > .div-anchor-figure,
+[id^="fig-"]:focus-within > figure > figcaption > .div-anchor-figure {
+  opacity: 1;
+}
+
+/* One link per figure: hide Quarto's corner link where the caption
+ * has one. */
+.has-div-anchor > .anchorjs-link {
+  display: none;
+}
