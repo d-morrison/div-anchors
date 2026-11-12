@@ -108,9 +108,11 @@ which Quarto's `anchor-sections` skips.
 In revealjs, a figure alone on a slide gets one after its caption too.
 On a figure with a caption anchor, Quarto's own corner link is hidden
 until it has keyboard focus, so each figure shows one link.
-The caption anchor is hidden from screen readers,
-because the figure's description is read from its caption;
-the corner link stays the accessible permalink.
+Where Quarto adds that corner link, the caption anchor is hidden from screen readers,
+because the figure's description is read from its caption,
+and the corner link stays the accessible permalink.
+A subfigure group or a revealjs figure has no corner link,
+so its caption anchor stays reachable.
 A labelled figure with no caption text still gets one,
 after its "Figure N" label.
 
