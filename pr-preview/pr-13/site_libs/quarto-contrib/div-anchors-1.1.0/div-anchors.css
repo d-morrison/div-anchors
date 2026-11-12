@@ -36,17 +36,24 @@
   opacity: 1;
 }
 
-/* A figure's anchor follows its caption, and shows while the figure is
- * hovered or focused. `:scope > figure > figcaption` in div-anchors.js
- * picks the figure's own caption, so hovering a subfigure group shows
- * only the group's anchor. */
+/* A figure's anchor follows its own caption and shows while the figure
+ * is hovered. A subfigure sits inside its group, so hovering a subfigure
+ * shows the group's anchor as well as its own. The second rule covers a
+ * revealjs figure, an <img> followed by <p class="caption">. */
 [id^="fig-"]:hover > figure > figcaption > .div-anchor-figure,
-[id^="fig-"]:focus-within > figure > figcaption > .div-anchor-figure {
+img[id^="fig-"]:hover + p.caption > .div-anchor-figure,
+p.caption:hover > .div-anchor-figure {
   opacity: 1;
 }
 
-/* One link per figure: hide Quarto's corner link where the caption
- * has one. */
-.has-div-anchor > .anchorjs-link {
-  display: none;
+/* One visible link per figure: where the caption has one, hide Quarto's
+ * corner link visually, but keep it in the tab order and show it on
+ * focus, since the caption anchor is hidden from assistive technology. */
+.has-div-anchor > .anchorjs-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
