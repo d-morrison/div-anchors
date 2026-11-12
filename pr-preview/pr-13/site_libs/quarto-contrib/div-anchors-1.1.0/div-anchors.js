@@ -130,16 +130,20 @@
    * has keyboard focus.
    *
    * The image's `aria-describedby` points at the caption, so a link inside
-   * the caption would be read as part of the figure's description. The
-   * caption anchor is therefore hidden from assistive technology and from
-   * the tab order; Quarto's corner link, which stays focusable, is the
-   * accessible permalink.
+   * the caption is read as part of the figure's description. Where Quarto
+   * gives the figure a corner link (an element with the `anchored` class),
+   * the caption anchor is hidden from assistive technology and from the
+   * tab order, and the corner link, which stays focusable, is the
+   * accessible permalink. A subfigure group and a revealjs figure get no
+   * corner link, so there the caption anchor stays reachable.
    */
-  function figureAnchor(id) {
+  function figureAnchor(id, hasCornerLink) {
     var anchor = createAnchor(id);
     anchor.classList.add("div-anchor-figure");
-    anchor.setAttribute("aria-hidden", "true");
-    anchor.setAttribute("tabindex", "-1");
+    if (hasCornerLink) {
+      anchor.setAttribute("aria-hidden", "true");
+      anchor.setAttribute("tabindex", "-1");
+    }
     return anchor;
   }
 
@@ -151,7 +155,7 @@
       if (!caption || caption.querySelector(":scope > a.div-anchor")) {
         return;
       }
-      caption.appendChild(figureAnchor(fig.id));
+      caption.appendChild(figureAnchor(fig.id, fig.classList.contains("anchored")));
       fig.classList.add("has-div-anchor");
     });
 
@@ -164,7 +168,7 @@
           caption.querySelector(":scope > a.div-anchor")) {
         return;
       }
-      caption.appendChild(figureAnchor(img.id));
+      caption.appendChild(figureAnchor(img.id, img.classList.contains("anchored")));
     });
   }
 
