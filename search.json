@@ -35,11 +35,18 @@
     "text": "4 Cross-References\nTheorem Theorem 1 is often taught in secondary school. The result in Lemma 1 implies the Corollary 1. See Definition 1 and Example 1 for an introduction to prime numbers."
   },
   {
+    "objectID": "example.html#figures",
+    "href": "example.html#figures",
+    "title": "Div Anchors Extension Demo",
+    "section": "5 Figures",
+    "text": "5 Figures\nHover over a figure or a subfigure to see the anchor after its caption. Figure 2 (a) is one panel of Figure 2.\n\n\n\n\n\n\nFigure 1: A single figure.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Left panel\n\n\n\n\n\n\n\n\n\n\n\n(b) Right panel\n\n\n\n\n\n\n\nFigure 2: A subfigure group."
+  },
+  {
     "objectID": "example.html#proof-without-anchor-unnumbered",
     "href": "example.html#proof-without-anchor-unnumbered",
     "title": "Div Anchors Extension Demo",
-    "section": "5 Proof (without anchor, unnumbered)",
-    "text": "5 Proof (without anchor, unnumbered)\n\nProof. Let \\(a\\) and \\(b\\) be the legs of a right triangle and \\(c\\) the hypotenuse. Arrange four copies of the triangle around a square with side \\(c\\). The outer shape is a square with side \\(a + b\\), so \\((a + b)^2 = c^2 + 4 \\cdot \\tfrac{1}{2}ab\\), which simplifies to \\(a^2 + b^2 = c^2\\)."
+    "section": "6 Proof (without anchor, unnumbered)",
+    "text": "6 Proof (without anchor, unnumbered)\n\nProof. Let \\(a\\) and \\(b\\) be the legs of a right triangle and \\(c\\) the hypotenuse. Arrange four copies of the triangle around a square with side \\(c\\). The outer shape is a square with side \\(a + b\\), so \\((a + b)^2 = c^2 + 4 \\cdot \\tfrac{1}{2}ab\\), which simplifies to \\(a^2 + b^2 = c^2\\)."
   },
   {
     "objectID": "index.html",

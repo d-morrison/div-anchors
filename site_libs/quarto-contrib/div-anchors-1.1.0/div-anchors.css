@@ -1,0 +1,59 @@
+/* div-anchors.css
+ * Visual URL anchor links for theorem and proof divs.
+ * Mirrors the behavior of Quarto's built-in `anchor-sections` option,
+ * which shows a small anchor icon on hover for HTML headings.
+ */
+
+/* Shared spacing value for theorem/proof permalink anchors. */
+:root {
+  --div-anchor-spacing: 0.375em;
+}
+
+.div-anchor {
+  opacity: 0;
+  font-size: 0.875em;
+  font-weight: 400;
+  margin-left: var(--div-anchor-spacing);
+  text-decoration: none;
+  color: inherit;
+  vertical-align: middle;
+  transition: opacity 0.2s ease;
+}
+
+.div-anchor:hover,
+.div-anchor:focus {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Show the anchor when hovering over any theorem or proof div.
+ * .theorem covers all theorem-type environments (lemma, corollary,
+ * proposition, conjecture, definition, example, exercise, algorithm).
+ * Proof-type environments are listed separately, and the
+ * cross-reference id prefixes catch divs with neither class. */
+:is(.theorem, .proof, .remark, .solution, [id^="thm-"], [id^="lem-"], [id^="cor-"], [id^="prp-"], [id^="cnj-"], [id^="def-"], [id^="exm-"], [id^="exr-"], [id^="rem-"], [id^="sol-"], [id^="alg-"]):hover .div-anchor:not(.div-anchor-figure),
+:is(.theorem, .proof, .remark, .solution, [id^="thm-"], [id^="lem-"], [id^="cor-"], [id^="prp-"], [id^="cnj-"], [id^="def-"], [id^="exm-"], [id^="exr-"], [id^="rem-"], [id^="sol-"], [id^="alg-"]):focus-within .div-anchor:not(.div-anchor-figure) {
+  opacity: 1;
+}
+
+/* A figure's anchor follows its own caption and shows while the figure
+ * is hovered. A subfigure sits inside its group, so hovering a subfigure
+ * shows the group's anchor as well as its own. The second rule covers a
+ * revealjs figure, an <img> followed by <p class="caption">. */
+[id^="fig-"]:hover > figure > figcaption > .div-anchor-figure,
+img[id^="fig-"]:hover + p.caption > .div-anchor-figure,
+p.caption:hover > .div-anchor-figure {
+  opacity: 1;
+}
+
+/* One visible link per figure: where the caption has one, hide Quarto's
+ * corner link visually, but keep it in the tab order and show it on
+ * focus, since the caption anchor is hidden from assistive technology. */
+.has-div-anchor > .anchorjs-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

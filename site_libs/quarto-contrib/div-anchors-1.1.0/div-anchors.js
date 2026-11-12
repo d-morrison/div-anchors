@@ -74,7 +74,8 @@
 
       // A div can match more than one selector, and the script can run
       // twice; never add a second anchor.
-      if (div.querySelector("a.div-anchor")) {
+      // A figure's anchor inside the div does not count.
+      if (div.querySelector("a.div-anchor:not(.div-anchor-figure)")) {
         return;
       }
 
@@ -117,9 +118,68 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", addDivAnchors);
-  } else {
+  /**
+   * Add an anchor link to the end of each figure's own caption.
+   *
+   * Quarto's `anchor-sections` skips the parent of a subfigure group
+   * (a `.quarto-layout-panel` without the `anchored` class), and puts the
+   * link it does add in the figure box's top-right corner, far from a
+   * centred image and under a plotly toolbar. A link after the caption,
+   * like the one after a theorem title, avoids both. div-anchors.css hides
+   * Quarto's corner link on a figure that gets one here, except while it
+   * has keyboard focus.
+   *
+   * The image's `aria-describedby` points at the caption, so a link inside
+   * the caption is read as part of the figure's description. Where Quarto
+   * gives the figure a corner link (an element with the `anchored` class),
+   * the caption anchor is hidden from assistive technology and from the
+   * tab order, and the corner link, which stays focusable, is the
+   * accessible permalink. A subfigure group and a revealjs figure get no
+   * corner link, so there the caption anchor stays reachable.
+   */
+  function figureAnchor(id, hasCornerLink) {
+    var anchor = createAnchor(id);
+    anchor.classList.add("div-anchor-figure");
+    if (hasCornerLink) {
+      anchor.setAttribute("aria-hidden", "true");
+      anchor.setAttribute("tabindex", "-1");
+    }
+    return anchor;
+  }
+
+  function addFigureAnchors() {
+    var figs = document.querySelectorAll("div[id^='fig-']");
+    figs.forEach(function (fig) {
+      // The figure's own caption, not a subfigure's.
+      var caption = fig.querySelector(":scope > figure > figcaption");
+      if (!caption || caption.querySelector(":scope > a.div-anchor")) {
+        return;
+      }
+      caption.appendChild(figureAnchor(fig.id, fig.classList.contains("anchored")));
+      fig.classList.add("has-div-anchor");
+    });
+
+    // In revealjs, a figure alone on a slide is an <img id="fig-..."> with
+    // its caption in the next <p class="caption">, with no wrapping div.
+    var imgs = document.querySelectorAll("img[id^='fig-']");
+    imgs.forEach(function (img) {
+      var caption = img.nextElementSibling;
+      if (!caption || !caption.matches("p.caption") ||
+          caption.querySelector(":scope > a.div-anchor")) {
+        return;
+      }
+      caption.appendChild(figureAnchor(img.id, img.classList.contains("anchored")));
+    });
+  }
+
+  function addAllAnchors() {
     addDivAnchors();
+    addFigureAnchors();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", addAllAnchors);
+  } else {
+    addAllAnchors();
   }
 })();
