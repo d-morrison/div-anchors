@@ -126,8 +126,23 @@
    * link it does add in the figure box's top-right corner, far from a
    * centred image and under a plotly toolbar. A link after the caption,
    * like the one after a theorem title, avoids both. div-anchors.css hides
-   * Quarto's corner link on a figure that gets one here.
+   * Quarto's corner link on a figure that gets one here, except while it
+   * has keyboard focus.
+   *
+   * The image's `aria-describedby` points at the caption, so a link inside
+   * the caption would be read as part of the figure's description. The
+   * caption anchor is therefore hidden from assistive technology and from
+   * the tab order; Quarto's corner link, which stays focusable, is the
+   * accessible permalink.
    */
+  function figureAnchor(id) {
+    var anchor = createAnchor(id);
+    anchor.classList.add("div-anchor-figure");
+    anchor.setAttribute("aria-hidden", "true");
+    anchor.setAttribute("tabindex", "-1");
+    return anchor;
+  }
+
   function addFigureAnchors() {
     var figs = document.querySelectorAll("div[id^='fig-']");
     figs.forEach(function (fig) {
@@ -136,10 +151,20 @@
       if (!caption || caption.querySelector(":scope > a.div-anchor")) {
         return;
       }
-      var anchor = createAnchor(fig.id);
-      anchor.classList.add("div-anchor-figure");
-      caption.appendChild(anchor);
+      caption.appendChild(figureAnchor(fig.id));
       fig.classList.add("has-div-anchor");
+    });
+
+    // In revealjs, a figure alone on a slide is an <img id="fig-..."> with
+    // its caption in the next <p class="caption">, with no wrapping div.
+    var imgs = document.querySelectorAll("img[id^='fig-']");
+    imgs.forEach(function (img) {
+      var caption = img.nextElementSibling;
+      if (!caption || !caption.matches("p.caption") ||
+          caption.querySelector(":scope > a.div-anchor")) {
+        return;
+      }
+      caption.appendChild(figureAnchor(img.id));
     });
   }
 
